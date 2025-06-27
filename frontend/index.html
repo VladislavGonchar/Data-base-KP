@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>База даних відеокарт</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>База даних відеокарт</h1>
+            <div class="controls">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Пошук за виробником або моделлю...">
+                    <button id="search-btn">Пошук</button>
+                    <button id="reset-search-btn">Скинути</button>
+                </div>
+                <button id="add-gpu-btn" class="action-btn">Додати відеокарту</button>
+            </div>
+        </div>
+        
+        <div class="sort-filter-container">
+            <div class="sort-controls">
+                <select id="sort-select">
+                    <option value="">Сортувати за...</option>
+                    <option value="price_asc">Ціна (зростання)</option>
+                    <option value="price_desc">Ціна (спадання)</option>
+                    <option value="power_asc">Живлення (зростання)</option>
+                    <option value="power_desc">Живлення (спадання)</option>
+                    <option value="resolution_asc">Роздільність (зростання)</option>
+                    <option value="resolution_desc">Роздільність (спадання)</option>
+                    <option value="clock_asc">Частота (зростання)</option>
+                    <option value="clock_desc">Частота (спадання)</option>
+                    <option value="bus_asc">Шина (зростання)</option>
+                    <option value="bus_desc">Шина (спадання)</option>
+                    <option value="memory_asc">Пам'ять (зростання)</option>
+                    <option value="memory_desc">Пам'ять (спадання)</option>
+                    <option value="year_asc">Рік (зростання)</option>
+                    <option value="year_desc">Рік (спадання)</option>
+                </select>
+            </div>
+            
+            <div class="filter-controls">
+                <select id="filter-manufacturer">
+                    <option value="">Всі виробники</option>
+                </select>
+                <select id="filter-memory-type">
+                    <option value="">Всі типи пам'яті</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="gpu-table-container">
+            <table id="gpu-table">
+                <thead>
+                    <tr>
+                        <th>Виробник</th>
+                        <th>Модель</th>
+                        <th>Рік</th>
+                        <th>Пам'ять (MB)</th>
+                        <th>Тип пам'яті</th>
+                        <th>Шина (біт)</th>
+                        <th>Частота (MHz)</th>
+                        <th>Роздільність</th>
+                        <th>Живлення (W)</th>
+                        <th>Ціна ($)</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody id="gpu-table-body">
+                    <!-- Дані будуть додані через JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Модальне вікно для додавання/редагування -->
+        <div id="gpu-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="modal-title">Додати нову відеокарту</h2>
+                <form id="gpu-form">
+                    <div class="form-group">
+                        <label for="manufacturer-id">Виробник:</label>
+                        <select id="manufacturer-id" required>
+                            <option value="">Оберіть виробника</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gpu-name">Модель:</label>
+                        <input type="text" id="gpu-name" placeholder="Наприклад: RTX 4090" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gpu-year">Рік випуску:</label>
+                        <input type="number" id="gpu-year" placeholder="2023" min="1990" max="2025" required>
+                    </div>
+                    
+                    <h3>Специфікації</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="memory-size">Об'єм пам'яті (MB):</label>
+                            <input type="number" id="memory-size" placeholder="24576" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="memory-type">Тип пам'яті:</label>
+                            <select id="memory-type" required>
+                                <option value="">Оберіть тип пам'яті</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bus-width">Ширина шини (біт):</label>
+                            <input type="number" id="bus-width" placeholder="256" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="base-clock">Базова частота (MHz):</label>
+                            <input type="number" id="base-clock" placeholder="1500" min="1" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="max-resolution">Макс. роздільність:</label>
+                            <input type="text" id="max-resolution" placeholder="7680x4320" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="psu-power">Потужність БЖ (W):</label>
+                            <input type="number" id="psu-power" placeholder="450" min="1" required>
+                        </div>
+                    </div>
+                    
+                    <h3>Ціна</h3>
+                    <div class="form-group">
+                        <label for="price">Ціна ($):</label>
+                        <input type="number" step="0.01" id="price" placeholder="1599.99" min="0" required>
+                    </div>
+                    
+                    <input type="hidden" id="gpu-id">
+                    <button type="submit" id="submit-btn">Зберегти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
